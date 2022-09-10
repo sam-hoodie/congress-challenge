@@ -1,4 +1,3 @@
-import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.type.TypeFactory
@@ -30,7 +29,7 @@ data class Term(
     val party: String,
 )
 
-fun parse(): List<Person> {
+fun parseCongressFile(): List<Person> {
     val input = Person::class.java.getResourceAsStream("/legislators-current.yaml")
     val mapper = ObjectMapper(YAMLFactory())
     mapper.registerModule(KotlinModule())
@@ -51,7 +50,7 @@ fun parse(): List<Person> {
 }
 
 fun main() {
-    val result = parse()
+    val result = parseCongressFile()
 
     println(result.size)
     for (person in result) {

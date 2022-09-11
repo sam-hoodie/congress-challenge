@@ -1,7 +1,3 @@
-fun main() {
-
-}
-
 fun printDirections() {
     println("To get the directions to commands for these genres, type: ")
     println("  0: Names Information")
@@ -34,10 +30,10 @@ fun printDirectionsNames() {
     println("      3: Get longest last name")
     print("        > ")
     val subinput = readLine().toString().toInt()
-    if (subinput == 0) { println("        Type the command: -get congress.names.shortestFirst"); return }
-    if (subinput == 1) { println("        Type the command: -get congress.names.longestFirst"); return }
-    if (subinput == 2) { println("        Type the command: -get congress.names.shortestLast"); return }
-    if (subinput == 3) { println("        Type the command: -get congress.names.longestLast "); return }
+    if (subinput == 0) { println("        Type the command: -get congress.names.shortest.first"); return }
+    if (subinput == 1) { println("        Type the command: -get congress.names.longest.first"); return }
+    if (subinput == 2) { println("        Type the command: -get congress.names.shortest.last"); return }
+    if (subinput == 3) { println("        Type the command: -get congress.names.longest.last"); return }
     println("          Invalid input")
 }
 fun printAgeAndGenderDirections() {

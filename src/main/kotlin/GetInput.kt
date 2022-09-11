@@ -10,15 +10,17 @@ fun main() {
             printDirections()
             continue
         }
-        interpret(input)
+        interpret(input, data)
     }
 }
 
-fun interpret(input: String) {
+fun interpret(input: String, data: List<Person>) {
     if (input.lowercase() == "end") {
         println("Successfully Ended")
         return
     }
-
+    if (input.lowercase().startsWith("-get congress.names")) {
+        interpretNameCommand(input, data)
+    }
 }
 

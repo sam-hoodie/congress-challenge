@@ -19,6 +19,12 @@ fun printDirections() {
     if (directionInput == 2) {
         printTermInfoDirections()
     }
+    println("        If you want to exit the directions menu, enter 0. If you want to restart, enter 1")
+    print("        > ")
+    val endDirections = readLine().toString().toInt()
+    if (endDirections == 1) { printDirections() }
+    else if (endDirections == 0) { return }
+    else { println("Invalid Input") }
 }
 fun printDirectionsNames() {
     println("      To get the commands for information on congressmen names, type: ")

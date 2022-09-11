@@ -53,7 +53,10 @@ fun main() {
     val result = parseCongressFile()
 
     println(result.size)
-    for (person in result) {
-        println("${person.name.first} ${person.name.last} served ${person.terms.size} time(s)")
+//    for (person in result) {
+//        println("${person.name.first} ${person.name.last} served ${person.terms.size} time(s)")
+//    }
+    for (i in 0..result.size - 1) {
+        println(result[i].terms)
     }
 }

@@ -40,14 +40,12 @@ fun printAgeAndGenderDirections() {
     println("      To get the age/gender commands, type: ")
     println("      0: Get the youngest congressman")
     println("      1: Get the oldest congressman")
-    println("      2: Get the average age of the congressmen")
-    println("      3: get the most common gender of the congressmen")
+    println("      2: get the most common gender of the congressmen")
     print("        > ")
     val subinput = readLine().toString().toInt()
     if (subinput == 0) { println("        Type the command: -get congress.age.youngest"); return }
     if (subinput == 1) { println("        Type the command: -get congress.age.oldest"); return }
-    if (subinput == 2) { println("        Type the command: -get congress.age.average"); return }
-    if (subinput == 3) { println("        Type the command: -get congress.gender.prevalent"); return }
+    if (subinput == 2) { println("        Type the command: -get congress.gender.prevalent"); return }
     println("          Invalid input")
 }
 

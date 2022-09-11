@@ -6,10 +6,6 @@ fun main() {
     while (input.lowercase() != "end") {
         print("> ")
         input = readLine().toString()
-        if (input.lowercase() == "directions"){
-            printDirections()
-            continue
-        }
         interpret(input, data)
     }
 }
@@ -21,6 +17,12 @@ fun interpret(input: String, data: List<Person>) {
     }
     if (input.lowercase().startsWith("-get congress.names")) {
         interpretNameCommand(input, data)
+    }
+    if (input.lowercase().startsWith("-get congress.age") || input.lowercase().startsWith("-get congress.gender")) {
+        interpretAgeAndGenderCommand(input, data)
+    }
+    if (input.lowercase() == "directions"){
+        printDirections()
     }
 }
 

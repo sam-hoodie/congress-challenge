@@ -56,7 +56,8 @@ fun main() {
 //    for (person in result) {
 //        println("${person.name.first} ${person.name.last} served ${person.terms.size} time(s)")
 //    }
-    for (i in 0..result.size - 1) {
-        println(result[i].terms)
-    }
+//    for (i in 0..result.size - 1) {
+//        println(result[i].terms)
+//    }
+    println(result[1].bio.birthday)
 }

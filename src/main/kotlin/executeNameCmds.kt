@@ -1,9 +1,10 @@
+import java.io.Console
+
 fun interpretNameCommand(command: String, data: List<Person>) {
     // -get congress.names.shortest.first
     // -get congress.names.shortest.last
     // -get congress.names.longest.first
     // -get congress.names.longest.last
-
     val commandParameters = command.split('.')
     if (commandParameters[2] == "shortest") {
         if (commandParameters[3] == "first") {

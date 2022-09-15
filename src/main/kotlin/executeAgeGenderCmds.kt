@@ -85,41 +85,19 @@ fun getBirthdayComparison(birthday1: String, birthday2: String, younger: Boolean
 }
 
 fun monthInterpreter(month: String): String {
-    if (month.toInt() == 1) {
-        return "January"
+    return when (month.toInt()) {
+        1 -> "January"
+        2 -> "February"
+        3 -> "March"
+        4 -> "April"
+        5 -> "May"
+        6 -> "June"
+        7 -> "July"
+        8 -> "August"
+        9 -> "September"
+        10 -> "October"
+        11 -> "November"
+        12 -> "December"
+        else -> "Invalid Month Number"
     }
-    if (month.toInt() == 2) {
-        return "February"
-    }
-    if (month.toInt() == 3) {
-        return "March"
-    }
-    if (month.toInt() == 4) {
-        return "April"
-    }
-    if (month.toInt() == 5) {
-        return "May"
-    }
-    if (month.toInt() == 6) {
-        return "June"
-    }
-    if (month.toInt() == 7) {
-        return "July"
-    }
-    if (month.toInt() == 8) {
-        return "August"
-    }
-    if (month.toInt() == 9) {
-        return "September"
-    }
-    if (month.toInt() == 10) {
-        return "October"
-    }
-    if (month.toInt() == 11) {
-        return "November"
-    }
-    if (month.toInt() == 12) {
-        return "December"
-    }
-    return "Invalid month number"
 }

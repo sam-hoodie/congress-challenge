@@ -21,6 +21,9 @@ fun interpret(input: String, data: List<Person>) {
     if (input.lowercase().startsWith("-get congress.age") || input.lowercase().startsWith("-get congress.gender")) {
         interpretAgeAndGenderCommand(input, data)
     }
+    if (input.lowercase().startsWith("-get congress.terms")) {
+        interpretTermCmds(input, data)
+    }
     if (input.lowercase() == "directions"){
         printDirections()
     }

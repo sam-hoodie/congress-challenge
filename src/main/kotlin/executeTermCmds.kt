@@ -2,19 +2,18 @@ import java.time.Duration
 import java.time.LocalDateTime
 
 fun main() {
-    val data = parseCongressFile()
-    printMostPopState(data)
+//    val data = parseCongressFile()
+//    printMostPopState(data)
+//    interpretTermCmds("-get congress.terms.pop.state", data)
 }
 
 fun interpretTermCmds(command: String, data: List<Person>) {
     val commandParameters = command.split('.')
     if (commandParameters[2] == "pop") {
-        if (commandParameters[3] == "state") {
-            printMostPopState(data)
-        } else if (commandParameters[3] == "party") {
-            printMostPopParty(data)
-        } else {
-            println("Invalid command >> ${commandParameters[3]} <<")
+        when (commandParameters[3]) {
+            "state" -> printMostPopState(data)
+            "party" -> printMostPopParty(data)
+            else -> println("Invalid command >> ${commandParameters[3]} <<")
         }
     } else if (commandParameters[2] == "most_terms") {
         printMostTerms(data)
@@ -116,8 +115,6 @@ fun getAllStates(data: List<Person>): List<String> {
     }
     return result
 }
-
-
 
 fun convertStateNames(state: String): String{
     val states = HashMap<String, String>()

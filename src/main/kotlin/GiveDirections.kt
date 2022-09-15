@@ -4,24 +4,20 @@ fun printDirections() {
     println("  1: Age and Gender Information")
     println("  2: Term Information")
     print("    > ")
-
-    val directionInput = readLine().toString().toInt()
-    if (directionInput == 0) {
-        printDirectionsNames()
-    }
-    if (directionInput == 1) {
-        printAgeAndGenderDirections()
-    }
-    if (directionInput == 2) {
-        printTermInfoDirections()
+    when (readLine().toString().toInt()) {
+        0 -> printDirectionsNames()
+        1 -> printAgeAndGenderDirections()
+        2 -> printTermInfoDirections()
     }
     println("        If you want to exit the directions menu, enter 0. If you want to restart, enter 1")
     print("        > ")
-    val endDirections = readLine().toString().toInt()
-    if (endDirections == 1) { printDirections() }
-    else if (endDirections == 0) { return }
-    else { println("Invalid Input") }
+    when (readLine().toString().toInt()) {
+        0 -> return
+        1 -> printDirections()
+        else -> println("Invalid Input")
+    }
 }
+
 fun printDirectionsNames() {
     println("      To get the commands for information on congressmen names, type: ")
     println("      0: Get shortest first name")
@@ -29,24 +25,27 @@ fun printDirectionsNames() {
     println("      2: Get longest first name")
     println("      3: Get longest last name")
     print("        > ")
-    val subinput = readLine().toString().toInt()
-    if (subinput == 0) { println("        Type the command: -get congress.names.shortest.first"); return }
-    if (subinput == 1) { println("        Type the command: -get congress.names.longest.first"); return }
-    if (subinput == 2) { println("        Type the command: -get congress.names.shortest.last"); return }
-    if (subinput == 3) { println("        Type the command: -get congress.names.longest.last"); return }
-    println("          Invalid input")
+    when (readLine().toString().toInt()) {
+        0 -> println("        Type the command: -get congress.names.shortest.first")
+        1 -> println("        Type the command: -get congress.names.longest.first")
+        2 -> println("        Type the command: -get congress.names.shortest.last")
+        3 -> println("        Type the command: -get congress.names.longest.last")
+        else -> println("          Invalid input")
+    }
 }
+
 fun printAgeAndGenderDirections() {
     println("      To get the age/gender commands, type: ")
     println("      0: Get the youngest congressman")
     println("      1: Get the oldest congressman")
     println("      2: get the most common gender of the congressmen")
     print("        > ")
-    val subinput = readLine().toString().toInt()
-    if (subinput == 0) { println("        Type the command: -get congress.age.youngest"); return }
-    if (subinput == 1) { println("        Type the command: -get congress.age.oldest"); return }
-    if (subinput == 2) { println("        Type the command: -get congress.gender.prevalent"); return }
-    println("          Invalid input")
+    when (readLine().toString().toInt()) {
+        0 -> println("        Type the command: -get congress.age.youngest")
+        1 -> println("        Type the command: -get congress.age.oldest")
+        2 -> println("        Type the command: -get congress.gender.prevalent")
+        else -> println("          Invalid input")
+    }
 }
 
 fun printTermInfoDirections() {
@@ -55,11 +54,13 @@ fun printTermInfoDirections() {
     println("      1: Get the most prevalent state")
     println("      2: Get the commands for term dates")
     print("        > ")
-    val subinput = readLine().toString().toInt()
-    if (subinput == 0) { println("        Type the command: -get congress.terms.pop.state"); return }
-    if (subinput == 1) { println("        Type the command: -get congress.terms.pop.party"); return }
-    if (subinput == 2) { printTermDateDirections(); return }
-    println("          Invalid input")
+    when (readLine().toString().toInt()) {
+        0 -> println("        Type the command: -get congress.terms.pop.party")
+        1 -> println("        Type the command: -get congress.terms.pop.state")
+        2 -> printTermDateDirections()
+        else -> println("          Invalid input")
+
+    }
 }
 
 fun printTermDateDirections() {
@@ -68,9 +69,10 @@ fun printTermDateDirections() {
     println("        1: Get the most time served by one person")
     println("        2: Get the most individual terms served by a person")
     print("          > ")
-    val subinput = readLine().toString().toInt()
-    if (subinput == 0) { println("          Type the command: -get congress.terms.longest_single"); return }
-    if (subinput == 1) { println("          Type the command: -get congress.terms.longest_time"); return }
-    if (subinput == 2) { println("          Type the command: -get congress.terms.most_terms"); return }
-    println("          Invalid input")
+    when (readLine().toString().toInt()) {
+        0 -> println("          Type the command: -get congress.terms.longest_single")
+        1 -> println("          Type the command: -get congress.terms.longest_time")
+        2 -> println("          Type the command: -get congress.terms.most_terms")
+        else -> println("          Invalid input")
+    }
 }

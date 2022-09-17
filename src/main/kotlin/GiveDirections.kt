@@ -3,11 +3,13 @@ fun printDirections() {
     println("  0: Names Information")
     println("  1: Age and Gender Information")
     println("  2: Term Information")
+    println("  3: Current Legislator Information")
     print("    > ")
     when (readLine().toString().toInt()) {
         0 -> printDirectionsNames()
         1 -> printAgeAndGenderDirections()
         2 -> printTermInfoDirections()
+        3 -> printDirectionsCurrent()
     }
     println("        If you want to exit the directions menu, enter 0. If you want to restart, enter 1")
     print("        > ")
@@ -15,6 +17,20 @@ fun printDirections() {
         0 -> return
         1 -> printDirections()
         else -> println("Invalid Input")
+    }
+}
+
+fun printDirectionsCurrent() {
+    println("      To get the commands for information on current congressmen in specified states, type: ")
+    println("      0: Get serving congressmen from a specified state")
+    println("      1: Get serving senate members from a specified state")
+    println("      2: Get serving house members from a specified state")
+    print("        > ")
+    when (readLine().toString().toInt()) {
+        0 -> println("        Type the command: -get congress.current.(any state name not case sensitive)")
+        1 -> println("        Type the command: -get senate.current.(any state name not case sensitive)")
+        2 -> println("        Type the command: -get house.current.(any state name not case sensitive)")
+        else -> println("          Invalid input")
     }
 }
 

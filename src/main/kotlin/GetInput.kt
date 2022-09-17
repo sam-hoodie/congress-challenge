@@ -7,16 +7,21 @@ fun main() {
         print("> ")
         input = readLine().toString()
         val inputParts = input.split('.')
-        val newData: List<Person> = when (inputParts[0]) {
-            "-get senate" -> filterSenateCongress("senate", data)
-            "-get house" -> filterSenateCongress("house", data)
-            else -> data
+        if (inputParts.size > 1 && inputParts[1] != "current") {
+            val newData: List<Person> = when (inputParts[0]) {
+                "-get senate" -> filterSenateCongress("senate", data)
+                "-get house" -> filterSenateCongress("house", data)
+                else -> data
+            }
+            interpret(input, newData)
+        } else {
+            interpret(input, data)
         }
-        interpret(input, newData)
     }
 }
 
 fun interpret(input: String, data: List<Person>) {
+    // -get house.current.georgia
     val inputParts = input.split(".")
     if (input.lowercase() == "end") {
         println("Successfully Ended")
@@ -30,6 +35,7 @@ fun interpret(input: String, data: List<Person>) {
         "gender" -> interpretAgeAndGenderCommand(input, data)
         "age" -> interpretAgeAndGenderCommand(input, data)
         "terms" -> interpretTermCmds(input, data)
+        "current" -> interpretCurrentCommands(input, data)
     }
 }
 

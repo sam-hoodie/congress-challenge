@@ -27,6 +27,7 @@ data class Term(
     val end: String,
     val state: String,
     val party: String,
+    val district: String?,
 )
 
 fun parseCongressFile(): List<Person> {

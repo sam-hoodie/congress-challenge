@@ -40,9 +40,7 @@ fun parseCongressFile(current: Boolean): List<Person> {
     val mapper = ObjectMapper(YAMLFactory())
     mapper.registerModule(KotlinModule())
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-
     val typeFactory: TypeFactory = mapper.typeFactory
-
     return try {
         mapper.readValue(input, typeFactory.constructCollectionType(
             MutableList::class.java,

@@ -6,20 +6,20 @@ fun interpretNameCommand(command: String, data: List<Person>) {
     // -get congress.names.longest.first
     // -get congress.names.longest.last
     val commandParameters = command.split('.')
-    if (commandParameters[2] == "shortest") {
-        when (commandParameters[3]) {
+    if (commandParameters[3] == "shortest") {
+        when (commandParameters[4]) {
             "first" -> println("   The shortest first name is " + getShortestFirst(data))
             "last" -> println("   The shortest last name is " + getShortestLast(data))
-            else -> println("   Invalid Command >> ." + commandParameters[3] + " <<")
+            else -> println("   Invalid Command >> ." + commandParameters[4] + " <<")
         }
-    } else if (commandParameters[2] == "longest") {
-        when (commandParameters[3]) {
+    } else if (commandParameters[3] == "longest") {
+        when (commandParameters[4]) {
             "first" -> println("   The longest first name is " + getLongestFirst(data))
             "last" -> println("   The longest last name is " + getLongestLast(data))
-            else -> println("  Invalid Command >> ." + commandParameters[3] + " <<")
+            else -> println("  Invalid Command >> ." + commandParameters[4] + " <<")
         }
     } else {
-        println("   Invalid Command >> ." + commandParameters[2] + " <<")
+        println("   Invalid Command >> ." + commandParameters[3] + " <<")
     }
 }
 

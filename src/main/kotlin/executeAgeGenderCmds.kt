@@ -5,15 +5,19 @@ fun interpretAgeAndGenderCommand(command: String, data: List<Person>) {
     // -get congress.age.youngest
     // -get congress.age.oldest
     // -get congress.gender.prevalent
+    if (command.startsWith("-get congress.all.age") || command.startsWith("-get congress.historic.age")) {
+        println("  The age commands are incompatible with historic data files")
+        return
+    }
     val commandParameters = command.split('.')
-    when (commandParameters[1]) {
-        "age" -> when (commandParameters[2]) {
+    when (commandParameters[2]) {
+        "age" -> when (commandParameters[3]) {
             "youngest" -> printMostExtremeAge(true, data)
             "oldest" -> printMostExtremeAge(false, data)
-            else -> println("     Invalid Command >> ." + commandParameters[2] + " <<")
+            else -> println("     Invalid Command >> ." + commandParameters[3] + " <<")
         }
         "gender" -> printCommonGender(data)
-        else -> println("   Invalid Command >> ." + commandParameters[1] + " <<")
+        else -> println("   Invalid Command >> ." + commandParameters[2] + " <<")
     }
 }
 

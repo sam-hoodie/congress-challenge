@@ -1,6 +1,11 @@
 // This is the section of the project that will get executed by the user
 fun main() {
-    val data = parseCongressFile(false)
+    val fullData = parseCongressFile(false) + parseCongressFile(true)
+    val currentData = parseCongressFile(true)
+    val historicData = parseCongressFile(false)
+    // -get congress.current.names.shortest.first
+    // -get congress.historic.names.shortest.first
+    // -get congress.all.names.shortest.first
     var input = ""
     println("To get the different commands for retrieving data, type \"directions\" (not case sensitive)")
     println("To end the process at any time, type \"end\" (not case sensitive)")
@@ -8,7 +13,13 @@ fun main() {
         print("> ")
         input = readLine().toString()
         val inputParts = input.split('.')
-        if (inputParts.size > 1 && inputParts[1] != "current") {
+        var data = fullData
+        if (inputParts[1] == "historic") {
+            data = historicData
+        } else if (inputParts[1] == "current") {
+            data = currentData
+        }
+        if (inputParts[1] != "current") {
             val newData: List<Person> = when (inputParts[0]) {
                 "-get senate" -> filterSenateCongress("senate", data)
                 "-get house" -> filterSenateCongress("house", data)
@@ -32,7 +43,7 @@ fun interpret(input: String, data: List<Person>) {
         printDirections()
         return
     }
-    when (inputParts[1].lowercase()) {
+    when (inputParts[2].lowercase()) {
         "names" -> interpretNameCommand(input, data)
         "gender" -> interpretAgeAndGenderCommand(input, data)
         "age" -> interpretAgeAndGenderCommand(input, data)

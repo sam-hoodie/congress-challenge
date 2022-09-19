@@ -1,4 +1,3 @@
-import java.util.*
 import kotlin.collections.HashMap
 
 fun main() {
@@ -8,8 +7,6 @@ fun main() {
 //    println(stateToAbbreviation("Alabama"))
 //    val example = listOf(listOf("world", "2"), listOf("hello", "2"), listOf("!!!", "3"))
 //    println(sortByDistrict(example))
-    val data = parseCongressFile()
-    interpretCurrentCommands("-get congress.current.ohio", data)
 }
 
 fun interpretCurrentCommands(input: String, data: List<Person>) {

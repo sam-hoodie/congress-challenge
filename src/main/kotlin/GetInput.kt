@@ -1,8 +1,9 @@
 // This is the section of the project that will get executed by the user
 fun main() {
-    val data = parseCongressFile()
+    val data = parseCongressFile(false)
     var input = ""
     println("To get the different commands for retrieving data, type \"directions\" (not case sensitive)")
+    println("To end the process at any time, type \"end\" (not case sensitive)")
     while (input.lowercase() != "end") {
         print("> ")
         input = readLine().toString()
@@ -29,6 +30,7 @@ fun interpret(input: String, data: List<Person>) {
     }
     if (input.lowercase() == "directions"){
         printDirections()
+        return
     }
     when (inputParts[1].lowercase()) {
         "names" -> interpretNameCommand(input, data)

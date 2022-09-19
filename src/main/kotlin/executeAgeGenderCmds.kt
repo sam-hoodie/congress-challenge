@@ -41,10 +41,12 @@ fun printCommonGender(data: List<Person>) {
 }
 
 fun printMostExtremeAge(youngest: Boolean, data: List<Person>) {
-    var extremeBday = data[0].bio.birthday
-    for (i in 1 until data.size) {
-        if (getBirthdayComparison(data[i].bio.birthday, extremeBday, youngest)) {
-            extremeBday = data[i].bio.birthday
+    var extremeBday = "0000-00-00"
+    for (i in data.indices) {
+        if (data[i].bio.birthday != null) {
+            if (getBirthdayComparison(data[i].bio.birthday.toString(), extremeBday, youngest)) {
+                extremeBday = data[i].bio.birthday.toString()
+            }
         }
     }
     val birthdayParts = extremeBday.split('-')

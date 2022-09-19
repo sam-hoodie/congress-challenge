@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
+import java.io.InputStream
 
 data class Person(
     val name: Name,
@@ -17,7 +18,7 @@ data class Name(
 )
 
 data class Bio(
-    val birthday: String,
+    val birthday: String?,
     val gender: String,
 )
 
@@ -26,12 +27,16 @@ data class Term(
     val start: String,
     val end: String,
     val state: String,
-    val party: String,
+    val party: String?,
     val district: String?,
 )
 
-fun parseCongressFile(): List<Person> {
-    val input = Person::class.java.getResourceAsStream("/legislators-current.yaml")
+fun parseCongressFile(current: Boolean): List<Person> {
+    val input: InputStream = if (current) {
+        Person::class.java.getResourceAsStream("/legislators-current.yaml") as InputStream
+    } else {
+        Person::class.java.getResourceAsStream("/legislators-historical.yaml") as InputStream
+    }
     val mapper = ObjectMapper(YAMLFactory())
     mapper.registerModule(KotlinModule())
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
@@ -51,7 +56,7 @@ fun parseCongressFile(): List<Person> {
 }
 
 fun main() {
-    val result = parseCongressFile()
+    val result = parseCongressFile(false)
 
     println(result.size)
 //    for (person in result) {
@@ -60,5 +65,4 @@ fun main() {
 //    for (i in 0..result.size - 1) {
 //        println(result[i].terms)
 //    }
-    println(result[1].bio.birthday)
 }

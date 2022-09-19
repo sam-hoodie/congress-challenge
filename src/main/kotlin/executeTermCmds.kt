@@ -61,15 +61,17 @@ fun printMostPopParty(data: List<Person>) {
     var mostPopularParty = ""
     var amountOfMostPopParty = 0
     for (i in uniqueParties.indices) {
-        val predicate: (String) -> Boolean = {it == parties[i]}
+        val predicate: (String) -> Boolean = { it == parties[i] }
         val stateAppearances = parties.count(predicate)
         if (stateAppearances > amountOfMostPopParty) {
             amountOfMostPopParty = stateAppearances
             mostPopularParty = parties[i]
         }
     }
-    println("  The most popular party is $mostPopularParty" +
-            " with $amountOfMostPopParty appearances")
+    println(
+        "  The most popular party is $mostPopularParty" +
+                " with $amountOfMostPopParty appearances"
+    )
 }
 
 fun getAllParties(data: List<Person>): List<String> {
@@ -77,7 +79,9 @@ fun getAllParties(data: List<Person>): List<String> {
     for (element in data) {
         val terms = element.terms
         for (element2 in terms) {
-            result.add(element2.party)
+            if (element2.party != null) {
+                result.add(element2.party)
+            }
         }
     }
     return result
@@ -95,16 +99,19 @@ fun printMostPopState(data: List<Person>) {
     var mostPopularState = ""
     var amountOfMostPopState = 0
     for (i in uniqueStates.indices) {
-        val predicate: (String) -> Boolean = {it == allStates[i]}
+        val predicate: (String) -> Boolean = { it == allStates[i] }
         val stateAppearances = allStates.count(predicate)
         if (stateAppearances > amountOfMostPopState) {
             amountOfMostPopState = stateAppearances
             mostPopularState = uniqueStates[i]
         }
     }
-    println("  The most popular state is ${convertStateNames(mostPopularState)}" +
-            " with $amountOfMostPopState appearances")
+    println(
+        "  The most popular state is ${convertStateNames(mostPopularState)}" +
+                " with $amountOfMostPopState appearances"
+    )
 }
+
 fun getAllStates(data: List<Person>): List<String> {
     val result = arrayListOf<String>()
     for (element in data) {
@@ -116,7 +123,7 @@ fun getAllStates(data: List<Person>): List<String> {
     return result
 }
 
-fun convertStateNames(state: String): String{
+fun convertStateNames(state: String): String {
     val states = HashMap<String, String>()
     states.put("AL", "Alabama")
     states.put("AK", "Alaska")
@@ -185,6 +192,6 @@ fun convertStateNames(state: String): String{
     states.put("WI", "Wisconsin")
     states.put("WY", "Wyoming")
     states.put("YT", "Yukon Territory")
-    states.put("Yukon Territory","YT")
+    states.put("Yukon Territory", "YT")
     return states[state].toString()
 }

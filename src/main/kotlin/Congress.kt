@@ -32,20 +32,22 @@ data class Term(
 )
 
 fun parseCongressFile(current: Boolean): List<Person> {
-    val input: InputStream = if (current) {
-        Person::class.java.getResourceAsStream("/legislators-current.yaml") as InputStream
+    val input = if (current) {
+        Person::class.java.getResourceAsStream("/legislators-current.yaml")
     } else {
-        Person::class.java.getResourceAsStream("/legislators-historical.yaml") as InputStream
+        Person::class.java.getResourceAsStream("/legislators-historical.yaml")
     }
     val mapper = ObjectMapper(YAMLFactory())
     mapper.registerModule(KotlinModule())
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
     val typeFactory: TypeFactory = mapper.typeFactory
     return try {
-        mapper.readValue(input, typeFactory.constructCollectionType(
-            MutableList::class.java,
-            Person::class.java
-        ))
+        mapper.readValue(
+            input, typeFactory.constructCollectionType(
+                MutableList::class.java,
+                Person::class.java
+            )
+        )
     } catch (exception: MissingKotlinParameterException) {
         println("Could not read YAML file!")
         println(exception.message)

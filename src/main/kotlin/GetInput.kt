@@ -1,25 +1,30 @@
 // This is the section of the project that will get executed by the user
 fun main() {
-    val fullData = parseCongressFile(false) + parseCongressFile(true)
     val currentData = parseCongressFile(true)
     val historicData = parseCongressFile(false)
-    // -get congress.current.names.shortest.first
-    // -get congress.historic.names.shortest.first
-    // -get congress.all.names.shortest.first
-    var input = ""
+    val fullData = currentData + historicData
+    // current commands :)
+    // age commands  :(
+    // name commands :)
+    // term commands :)
     println("To get the different commands for retrieving data, type \"directions\" (not case sensitive)")
     println("To end the process at any time, type \"end\" (not case sensitive)")
-    while (input.lowercase() != "end") {
+    while (true) {
         print("> ")
-        input = readLine().toString()
+        val input = readLine().toString()
+        if (input.lowercase() == "end") {
+            println("Successfully ended")
+            break
+        }
         val inputParts = input.split('.')
+        if (input == "directions") { printDirections(); continue }
         var data = fullData
         if (inputParts[1] == "historic") {
             data = historicData
-        } else if (inputParts[1] == "current") {
+        } else if (inputParts[1] == "serving") {
             data = currentData
         }
-        if (inputParts[1] != "current") {
+        if (inputParts[0] != "-get congress") {
             val newData: List<Person> = when (inputParts[0]) {
                 "-get senate" -> filterSenateCongress("senate", data)
                 "-get house" -> filterSenateCongress("house", data)

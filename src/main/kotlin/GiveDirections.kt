@@ -27,9 +27,9 @@ fun printDirectionsCurrent() {
     println("      2: Get serving house members from a specified state")
     print("        > ")
     when (readLine().toString().toInt()) {
-        0 -> println("        Type the command: -get congress.current.(any state name not case sensitive)")
-        1 -> println("        Type the command: -get senate.current.(any state name not case sensitive)")
-        2 -> println("        Type the command: -get house.current.(any state name not case sensitive)")
+        0 -> println("        Type the command: -get congress.(serving/historic/all).current.(any state name not case sensitive)")
+        1 -> println("        Type the command: -get senate.(serving/historic/all).current.(any state name not case sensitive)")
+        2 -> println("        Type the command: -get house.(serving/historic/all).current.(any state name not case sensitive)")
         else -> println("          Invalid input")
     }
 }
@@ -42,10 +42,10 @@ fun printDirectionsNames() {
     println("      3: Get longest last name")
     print("        > ")
     when (readLine().toString().toInt()) {
-        0 -> println("        Type the command: -get congress.names.shortest.first")
-        1 -> println("        Type the command: -get congress.names.longest.first")
-        2 -> println("        Type the command: -get congress.names.shortest.last")
-        3 -> println("        Type the command: -get congress.names.longest.last")
+        0 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).names.shortest.first")
+        1 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).names.longest.first")
+        2 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).names.shortest.last")
+        3 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).names.longest.last")
         else -> println("          Invalid input")
     }
 }
@@ -57,9 +57,9 @@ fun printAgeAndGenderDirections() {
     println("      2: get the most common gender of the congressmen")
     print("        > ")
     when (readLine().toString().toInt()) {
-        0 -> println("        Type the command: -get congress.age.youngest")
-        1 -> println("        Type the command: -get congress.age.oldest")
-        2 -> println("        Type the command: -get congress.gender.prevalent")
+        0 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).age.youngest")
+        1 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).age.oldest")
+        2 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).gender.prevalent")
         else -> println("          Invalid input")
     }
 }
@@ -71,8 +71,8 @@ fun printTermInfoDirections() {
     println("      2: Get the commands for term dates")
     print("        > ")
     when (readLine().toString().toInt()) {
-        0 -> println("        Type the command: -get congress.terms.pop.party")
-        1 -> println("        Type the command: -get congress.terms.pop.state")
+        0 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).terms.pop.party")
+        1 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).terms.pop.state")
         2 -> printTermDateDirections()
         else -> println("          Invalid input")
 
@@ -86,9 +86,9 @@ fun printTermDateDirections() {
     println("        2: Get the most individual terms served by a person")
     print("          > ")
     when (readLine().toString().toInt()) {
-        0 -> println("          Type the command: -get congress.terms.longest_single")
-        1 -> println("          Type the command: -get congress.terms.longest_time")
-        2 -> println("          Type the command: -get congress.terms.most_terms")
+        0 -> println("          Type the command: -get (congress/senate/house).(serving/historic/all).terms.longest_single")
+        1 -> println("          Type the command: -get (congress/senate/house).(serving/historic/all).terms.longest_time")
+        2 -> println("          Type the command: -get (congress/senate/house).(serving/historic/all).terms.most_terms")
         else -> println("          Invalid input")
     }
 }

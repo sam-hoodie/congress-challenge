@@ -11,8 +11,8 @@ fun main() {
 
 fun interpretCurrentCommands(input: String, data: List<Person>) {
     val cmdParts = input.split(' ')[1].split('.')
-    val stateToFind = stateToAbbreviation(cmdParts[2].lowercase())
-    val legislators = arrayListOf<List<String>>()
+    val stateToFind = stateToAbbreviation(cmdParts[3].lowercase())
+    var legislators = arrayListOf<List<String>>()
     for (i in 0..data.size - 1) {
         val terms = data[i].terms
         if (terms[terms.size - 1].state == stateToFind) {
@@ -42,6 +42,7 @@ fun interpretCurrentCommands(input: String, data: List<Person>) {
             }
         }
     }
+    legislators = legislators.toSet().toList() as ArrayList<List<String>>
     if (cmdParts[0] != "house") {
         for (i in 0..legislators.size - 1) {
             when (cmdParts[0]) {

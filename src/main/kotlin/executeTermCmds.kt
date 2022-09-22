@@ -5,19 +5,20 @@ fun main() {
 //    val data = parseCongressFile()
 //    printMostPopState(data)
 //    interpretTermCmds("-get congress.terms.pop.state", data)
+    // -get congress.serving.terms.pop.state
 }
 
 fun interpretTermCmds(command: String, data: List<Person>) {
     val commandParameters = command.split('.')
-    if (commandParameters[2] == "pop") {
-        when (commandParameters[3]) {
+    if (commandParameters[3] == "pop") {
+        when (commandParameters[4]) {
             "state" -> printMostPopState(data)
             "party" -> printMostPopParty(data)
             else -> println("Invalid command >> ${commandParameters[3]} <<")
         }
-    } else if (commandParameters[2] == "most_terms") {
+    } else if (commandParameters[3] == "most_terms") {
         printMostTerms(data)
-    } else if (commandParameters[2] == "longest_time") {
+    } else if (commandParameters[3] == "longest_time") {
         printMostDaysServed(data)
     }
 }

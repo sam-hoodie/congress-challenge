@@ -10,17 +10,24 @@ fun main() {
 
 fun interpretTermCmds(command: String, data: List<Person>) {
     val commandParameters = command.split('.')
+    var printed = false
     if (commandParameters[3] == "pop") {
-        when (commandParameters[4]) {
-            "state" -> printMostPopState(data)
-            "party" -> printMostPopParty(data)
-            else -> println("Invalid command >> ${commandParameters[3]} <<")
+        if (commandParameters[4] == "state") {
+            printMostPopState(data)
+            return
+        }
+        if (commandParameters[4] == "state") {
+            printMostPopParty(data)
+            return
         }
     } else if (commandParameters[3] == "most_terms") {
         printMostTerms(data)
+        return
     } else if (commandParameters[3] == "longest_time") {
         printMostDaysServed(data)
+        return
     }
+    printAutocorrect(command)
 }
 
 fun printMostDaysServed(data: List<Person>) {

@@ -15,6 +15,7 @@ repositories {
 dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.4")
+    implementation("org.apache.commons:commons-text:1.9")
     testImplementation(kotlin("test"))
 }
 

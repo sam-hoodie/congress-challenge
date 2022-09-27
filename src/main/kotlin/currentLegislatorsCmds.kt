@@ -3,14 +3,16 @@ import kotlin.collections.HashMap
 fun main() {
     // -get congress.current.georgia
     // -get senate.current.georgia
-    // -get house.current.georgia
+    // -get house.serving.current.georgia
 //    println(stateToAbbreviation("Alabama"))
 //    val example = listOf(listOf("world", "2"), listOf("hello", "2"), listOf("!!!", "3"))
 //    println(sortByDistrict(example))
+//    val data = parseCongressFile(true)
+//    println(interpretCurrentCommands("-get congress.serving.current.georgai", data))
 }
 
-fun interpretCurrentCommands(input: String, data: List<Person>) {
-    val cmdParts = input.split(' ')[1].split('.')
+fun interpretCurrentCommands(command: String, data: List<Person>) {
+    val cmdParts = command.split(' ')[1].split('.')
     val stateToFind = stateToAbbreviation(cmdParts[3].lowercase())
     var legislators = arrayListOf<List<String>>()
     for (i in 0..data.size - 1) {
@@ -42,21 +44,26 @@ fun interpretCurrentCommands(input: String, data: List<Person>) {
             }
         }
     }
-    legislators = legislators.toSet().toList() as ArrayList<List<String>>
-    if (cmdParts[0] != "house") {
-        for (i in 0..legislators.size - 1) {
-            when (cmdParts[0]) {
-                "senate" -> println("  " + legislators[i][0])
-                "congress" -> println("  " + legislators[i][0] + " (" + legislators[i][1] + ")")
+    if (legislators.isNotEmpty()) {
+        legislators = legislators.toSet().toList() as ArrayList<List<String>>
+        if (cmdParts[0] != "house") {
+            for (i in 0..legislators.size - 1) {
+                when (cmdParts[0]) {
+                    "senate" -> println("  " + legislators[i][0])
+                    "congress" -> println("  " + legislators[i][0] + " (" + legislators[i][1] + ")")
+                }
             }
-        }
-    } else {
-        val sorted = sortByDistrict(legislators)
-        for (i in 0..sorted.size - 1) {
-            val district = sorted[i][1]
-            println("  " + sorted[i][0] + " (District " + district + ")")
+            return
+        } else if (cmdParts[0] == "house") {
+            val sorted = sortByDistrict(legislators)
+            for (i in sorted.indices) {
+                val district = sorted[i][1]
+                println("  " + sorted[i][0] + " (District " + district + ")")
+            }
+            return
         }
     }
+    printAutocorrect(command)
 }
 
 fun sortByDistrict(input: List<List<String>>): List<List<String>> {

@@ -11,28 +11,33 @@ fun main() {
     println("To end the process at any time, type \"end\" (not case sensitive)")
     while (true) {
         print("> ")
-        val input = readLine().toString()
-        if (input.lowercase() == "end") {
+        val command = readLine().toString()
+        if (command.lowercase() == "end") {
             println("Successfully ended")
             break
         }
-        val inputParts = input.split('.')
-        if (input == "directions") { printDirections(); continue }
-        var data = fullData
-        if (inputParts[1] == "historic") {
-            data = historicData
+        val inputParts = command.split('.')
+        if (command == "directions") { printDirections(); continue }
+        val data: List<Person> = if (inputParts[1] == "historic") {
+            historicData
         } else if (inputParts[1] == "serving") {
-            data = currentData
+            currentData
+        } else if(inputParts[1] == "all") {
+            fullData
+        } else {
+            listOf<Person>()
         }
-        if (inputParts[0] != "-get congress") {
+        if (inputParts[0] != "-get congress" && (inputParts[0] == "-get senate" || inputParts[0] == "-get house")) {
             val newData: List<Person> = when (inputParts[0]) {
                 "-get senate" -> filterSenateCongress("senate", data)
                 "-get house" -> filterSenateCongress("house", data)
                 else -> data
             }
-            interpret(input, newData)
+            interpret(command, newData)
+        } else if(inputParts[0] == "-get congress") {
+                interpret(command, data)
         } else {
-            interpret(input, data)
+            printAutocorrect(command)
         }
     }
 }

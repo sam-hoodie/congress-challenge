@@ -1,6 +1,7 @@
 fun main() {
     println(getBirthdayComparison("1996-08-08", "1997-03-23", false))
 }
+
 fun interpretAgeAndGenderCommand(command: String, data: List<Person>) {
     // -get congress.age.youngest
     // -get congress.age.oldest
@@ -10,15 +11,21 @@ fun interpretAgeAndGenderCommand(command: String, data: List<Person>) {
         return
     }
     val commandParameters = command.split('.')
-    when (commandParameters[2]) {
-        "age" -> when (commandParameters[3]) {
-            "youngest" -> printMostExtremeAge(true, data)
-            "oldest" -> printMostExtremeAge(false, data)
-            else -> println("     Invalid Command >> ." + commandParameters[3] + " <<")
+    if (commandParameters[2] == "age") {
+        if (commandParameters[3] == "youngest") {
+            printMostExtremeAge(true, data)
+            return
         }
-        "gender" -> printCommonGender(data)
-        else -> println("   Invalid Command >> ." + commandParameters[2] + " <<")
+        if (commandParameters[3] == "youngest") {
+            printMostExtremeAge(false, data)
+            return
+        }
     }
+    if (commandParameters[2] == "gender") {
+        printCommonGender(data)
+        return
+    }
+    printAutocorrect(command)
 }
 
 fun printCommonGender(data: List<Person>) {

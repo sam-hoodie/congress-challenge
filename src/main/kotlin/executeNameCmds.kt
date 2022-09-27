@@ -1,4 +1,7 @@
-import java.io.Console
+fun main() {
+    val data = parseCongressFile(true)
+    interpretNameCommand("-get congress.serving.names.shortest.frist", data)
+}
 
 fun interpretNameCommand(command: String, data: List<Person>) {
     // -get congress.names.shortest.first
@@ -7,20 +10,25 @@ fun interpretNameCommand(command: String, data: List<Person>) {
     // -get congress.names.longest.last
     val commandParameters = command.split('.')
     if (commandParameters[3] == "shortest") {
-        when (commandParameters[4]) {
-            "first" -> println("   The shortest first name is " + getShortestFirst(data))
-            "last" -> println("   The shortest last name is " + getShortestLast(data))
-            else -> println("   Invalid Command >> ." + commandParameters[4] + " <<")
+        if (commandParameters[4] == "first") {
+            println("   The shortest first name is " + getShortestFirst(data))
+            return
+        }
+        if (commandParameters[4] == "first") {
+            println("   The shortest last name is " + getShortestLast(data))
+            return
         }
     } else if (commandParameters[3] == "longest") {
-        when (commandParameters[4]) {
-            "first" -> println("   The longest first name is " + getLongestFirst(data))
-            "last" -> println("   The longest last name is " + getLongestLast(data))
-            else -> println("  Invalid Command >> ." + commandParameters[4] + " <<")
+        if (commandParameters[4] == "first") {
+            println("   The longest first name is " + getLongestFirst(data))
+            return
         }
-    } else {
-        println("   Invalid Command >> ." + commandParameters[3] + " <<")
+        if (commandParameters[4] == "last") {
+            println("   The longest last name is " + getLongestLast(data))
+            return
+        }
     }
+    printAutocorrect(command)
 }
 
 fun getShortestFirst(data: List<Person>): String {

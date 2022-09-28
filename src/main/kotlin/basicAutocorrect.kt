@@ -16,20 +16,21 @@ fun main() {
 //    println(isValidCommand("congress.serving.terms.shortest.first"))
 //    println(autocorrect("-get conress.serving.terms.shortest.frist"))
 //    println(removeParts(arrayListOf("1", "2", "3", "4"), 2))
+//    println(isValidCommand("congress.serving.names.shortest.first"))
+    println(autocorrect("-get houes.seving.gendr.prevalnt"))
+//println(provideAutocorrectOptions("gener", 2))
 }
 
 fun printAutocorrect(command: String) {
     print("  Invalid command!")
-    val type = getCmdType(command)
+    val type = getCmdExceptionType(command)
     when (type) {
-        1 -> println(" -> Invalid get formatting!")
-        2 -> println(" -> Missing -get command!")
-        3 -> println(" -> Invalid command formatting!")
-        4 -> println(" -> Insufficient amount of arguments")
-        5 -> println(" -> Invalid starting space(s)")
-    }
-    if (type != 0) {
-        return
+        CommandExceptionType.NO_SPACE -> println(" -> Invalid get formatting!")
+        CommandExceptionType.NO_GET -> println(" -> Missing -get command!")
+        CommandExceptionType.NO_DOTS -> println(" -> Invalid command formatting!")
+        CommandExceptionType.NOT_ENOUGH_PARTS -> println(" -> Insufficient amount of arguments")
+        CommandExceptionType.STARTS_WITH_SPACE -> println(" -> Invalid starting space(s)")
+        else -> return
     }
     val corrected = autocorrect(command)
     print(" Try replacing it with one of these:")
@@ -38,24 +39,34 @@ fun printAutocorrect(command: String) {
         println("  -get ${corrected[i]}")
     }
 }
-fun getCmdType(command: String): Int {
-    if (!command.contains(' ')) {
-        return 1
-    }
+
+enum class CommandExceptionType {
+    NO_SPACE,
+    NO_GET,
+    NO_DOTS,
+    NOT_ENOUGH_PARTS,
+    STARTS_WITH_SPACE
+}
+
+fun getCmdExceptionType(command: String): CommandExceptionType? {
     if (!command.startsWith("-get ")) {
-        return 2
+        return CommandExceptionType.NO_GET
+    }
+    if (!command.contains(' ')) {
+        return CommandExceptionType.NO_SPACE
     }
     if (!command.contains('.')) {
-        return 3
+        return CommandExceptionType.NO_DOTS
     }
     if (command.split('.').size < 4) {
-        return 4
+        return CommandExceptionType.NOT_ENOUGH_PARTS
     }
     if (command.startsWith(" ")) {
-        return 5
+        return CommandExceptionType.STARTS_WITH_SPACE
     }
-    return 0
+    return null
 }
+
 fun autocorrect(input: String): List<String> {
     var parts = arrayListOf(input.split(' ')[1].split('.'))
     for (i in parts.indices) {
@@ -87,34 +98,11 @@ fun autocorrect(input: String): List<String> {
 }
 
 
-
 fun removeParts(parts: ArrayList<List<String>>, toRemove: Int): ArrayList<List<String>> {
     for (i in 1..toRemove) {
         parts.removeAt(0)
     }
     return parts
-}
-
-fun fixCommand(command: String): List<String> {
-
-    if (isValidCommand(command)) {
-        return listOf(command)
-    }
-    val parts = command.split(' ')[1].split('.')
-    val suggestedCommands = arrayListOf<String>()
-    for (i in parts.indices) {
-        if (!isValidPart(parts[i], i)) {
-            val suggestions = provideAutocorrectOptions(parts[i], i) as List<String>
-            for (i2 in suggestions.indices) {
-                val currentSuggestion = arrayListOf<String>()
-                currentSuggestion.addAll(parts.subList(0, i))
-                currentSuggestion.add(suggestions[i2])
-                currentSuggestion.addAll(parts.subList(i + 1, parts.size))
-                suggestedCommands.add(connectWithDot(currentSuggestion))
-            }
-        }
-    }
-    return suggestedCommands
 }
 
 fun isValidCommand(command: String): Boolean {
@@ -146,7 +134,7 @@ fun isValidPart(word: String, index: Int): Boolean {
 
 fun provideAutocorrectOptions(word: String, part: Int): List<String> {
     var wordsToCheckFor = listOf("")
-    var suggestions = arrayListOf<String>()
+    val suggestions = arrayListOf<String>()
     when (part) {
         0 -> wordsToCheckFor = listOf("congress", "senate", "house")
         1 -> wordsToCheckFor = listOf("all", "serving", "historic")
@@ -165,35 +153,6 @@ fun provideAutocorrectOptions(word: String, part: Int): List<String> {
     } else {
         suggestions.addAll(autocorrectSuggestions(word, wordsToCheckFor))
     }
-//    val newCommandParts = arrayListOf<String>()
-//    val suggestedCommands = arrayListOf<String>()
-//    val newParts = command.split('.')
-//    if (suggestions[0] != "none") {
-//        for (word in suggestions.indices) {
-//            for (cmdPart in newParts.indices) {
-//                if (cmdPart == 0) {
-//                    if (cmdPart != part) {
-//                        newCommandParts.add(newParts[0])
-//                    } else {
-//                        newCommandParts.add("-get " + suggestions[word])
-//                    }
-//                } else {
-//                    if (cmdPart != part) {
-//                        newCommandParts.add(newParts[cmdPart])
-//                    } else {
-//                        newCommandParts.add(suggestions[word])
-//                    }
-//                }
-//            }
-//            suggestedCommands.add(connectWithDot(newCommandParts))
-//            newCommandParts.clear()
-//        }
-//    } else {
-//        return listOf("none")
-//    }
-//    if (suggestedCommands.contains(command)) {
-//        return listOf("same")
-//    }
     return suggestions
 }
 
@@ -213,16 +172,16 @@ fun autocorrectSuggestions(word: String, wordsToCheckFor: List<String>): List<St
     val possibleWords = arrayListOf<String>()
     for (i in wordsToCheckFor.indices) {
         when {
-            word.length == 2 -> if (levenshteinFast(word, wordsToCheckFor[i]) <= 2) {
+            word.length == 2 -> if (levenshteinFast(word, wordsToCheckFor[i]) <= 1) {
                 possibleWords.add(wordsToCheckFor[i])
             }
-            (word.length == 3 || word.length == 4) -> if (levenshteinFast(word, wordsToCheckFor[i]) <= 3) {
+            (word.length == 3 || word.length == 4) -> if (levenshteinFast(word, wordsToCheckFor[i]) <= 2) {
                 possibleWords.add(wordsToCheckFor[i])
             }
-            word.length >= 8 -> if (levenshteinFast(word, wordsToCheckFor[i]) <= 5) {
+            word.length >= 8 -> if (levenshteinFast(word, wordsToCheckFor[i]) <= 4) {
                 possibleWords.add(wordsToCheckFor[i])
             }
-            else -> if (levenshteinFast(word, wordsToCheckFor[i]) <= 4) {
+            else -> if (levenshteinFast(word, wordsToCheckFor[i]) <= 3) {
                 possibleWords.add(wordsToCheckFor[i])
             }
         }

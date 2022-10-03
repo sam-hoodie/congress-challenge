@@ -1,5 +1,6 @@
 fun main() {
-    println(getBirthdayComparison("1996-08-08", "1997-03-23", false))
+//    println(getBirthdayComparison("1996-08-08", "1997-03-23", false))
+    println(getMostExtremeAge(false, parseCongressFile(true)))
 }
 
 fun interpretAgeAndGenderCommand(command: String, data: List<Person>) {
@@ -13,22 +14,33 @@ fun interpretAgeAndGenderCommand(command: String, data: List<Person>) {
     val commandParameters = command.split('.')
     if (commandParameters[2] == "age") {
         if (commandParameters[3] == "youngest") {
-            printMostExtremeAge(true, data)
+            println("The youngest congressman was born on ${getMostExtremeAge(true, data)}")
             return
         }
         if (commandParameters[3] == "youngest") {
-            printMostExtremeAge(false, data)
+            println("The youngest congressman was born on ${getMostExtremeAge(true, data)}")
             return
         }
     }
     if (commandParameters[2] == "gender") {
-        printCommonGender(data)
+        val result = getCommonGender(data)
+        when (result) {
+            CommonGender.MALE -> println("  There are more male than female congressmen")
+            CommonGender.FEMALE -> println("  There are more female than male congressmen")
+            CommonGender.SAME -> println("  There are the same amount of male and female congressmen")
+        }
         return
     }
     printAutocorrect(command)
 }
 
-fun printCommonGender(data: List<Person>) {
+enum class CommonGender {
+    MALE,
+    FEMALE,
+    SAME
+}
+
+fun getCommonGender(data: List<Person>): CommonGender {
     val allGender = arrayListOf<String>()
     for (element in data) {
         allGender.add(element.bio.gender)
@@ -42,17 +54,20 @@ fun printCommonGender(data: List<Person>) {
             femaleCount++
         }
     }
-    if (maleCount > femaleCount) {
-        println("  There are more male than female congressmen")
+    return if (maleCount > femaleCount) {
+        CommonGender.MALE
     } else if (femaleCount > maleCount) {
-        println("  There are more female than male congressmen")
+        CommonGender.FEMALE
     } else {
-        println("  There is an equal amount of male and female congressmen")
+        CommonGender.SAME
     }
 }
 
-fun printMostExtremeAge(youngest: Boolean, data: List<Person>) {
+fun getMostExtremeAge(youngest: Boolean, data: List<Person>): String {
     var extremeBday = "0000-00-00"
+    if (!youngest) {
+        extremeBday = "9999-99-99"
+    }
     for (i in data.indices) {
         if (data[i].bio.birthday != null) {
             if (getBirthdayComparison(data[i].bio.birthday.toString(), extremeBday, youngest)) {
@@ -61,11 +76,7 @@ fun printMostExtremeAge(youngest: Boolean, data: List<Person>) {
         }
     }
     val birthdayParts = extremeBday.split('-')
-    if (youngest) {
-        println("  The youngest congressman was born on ${monthInterpreter(birthdayParts[1])} ${birthdayParts[2]}, ${birthdayParts[0]}")
-    } else {
-        println("  The oldest congressman was born on ${monthInterpreter(birthdayParts[1])} ${birthdayParts[2]}, ${birthdayParts[0]}")
-    }
+    return monthInterpreter(birthdayParts[1].toInt().toString()) + " " + birthdayParts[2] + ", " + birthdayParts[0]
 }
 
 fun getBirthdayComparison(birthday1: String, birthday2: String, younger: Boolean): Boolean {

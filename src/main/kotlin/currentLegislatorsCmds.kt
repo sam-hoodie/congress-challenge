@@ -14,7 +14,32 @@ fun main() {
 fun interpretCurrentCommands(command: String, data: List<Person>) {
     val cmdParts = command.split(' ')[1].split('.')
     val stateToFind = stateToAbbreviation(cmdParts[3].lowercase())
-    var legislators = arrayListOf<List<String>>()
+    var legislators = getLegislators(data, stateToFind, command)
+    if (legislators.isNotEmpty()) {
+        legislators = legislators.toSet().toList() as ArrayList<List<String>>
+        if (cmdParts[0] != "house") {
+            for (i in legislators.indices) {
+                when (cmdParts[0]) {
+                    "senate" -> println("  " + legislators[i][0])
+                    "congress" -> println("  " + legislators[i][0] + " (" + legislators[i][1] + ")")
+                }
+            }
+            return
+        } else if (cmdParts[0] == "house") {
+            val sorted = sortByDistrict(legislators)
+            for (i in sorted.indices) {
+                val district = sorted[i][1]
+                println("  " + sorted[i][0] + " (District " + district + ")")
+            }
+            return
+        }
+    }
+    printAutocorrect(command)
+}
+
+fun getLegislators(data: List<Person>, stateToFind: String, command: String): List<List<String>> {
+    val cmdParts = command.split(' ')[1].split('.')
+    val legislators = arrayListOf<List<String>>()
     for (i in 0..data.size - 1) {
         val terms = data[i].terms
         if (terms[terms.size - 1].state == stateToFind) {
@@ -44,26 +69,7 @@ fun interpretCurrentCommands(command: String, data: List<Person>) {
             }
         }
     }
-    if (legislators.isNotEmpty()) {
-        legislators = legislators.toSet().toList() as ArrayList<List<String>>
-        if (cmdParts[0] != "house") {
-            for (i in 0..legislators.size - 1) {
-                when (cmdParts[0]) {
-                    "senate" -> println("  " + legislators[i][0])
-                    "congress" -> println("  " + legislators[i][0] + " (" + legislators[i][1] + ")")
-                }
-            }
-            return
-        } else if (cmdParts[0] == "house") {
-            val sorted = sortByDistrict(legislators)
-            for (i in sorted.indices) {
-                val district = sorted[i][1]
-                println("  " + sorted[i][0] + " (District " + district + ")")
-            }
-            return
-        }
-    }
-    printAutocorrect(command)
+    return legislators
 }
 
 fun sortByDistrict(input: List<List<String>>): List<List<String>> {

@@ -13,24 +13,29 @@ fun interpretTermCmds(command: String, data: List<Person>) {
     var printed = false
     if (commandParameters[3] == "pop") {
         if (commandParameters[4] == "state") {
-            printMostPopState(data)
+            println(getMostPopularState(data))
             return
         }
-        if (commandParameters[4] == "state") {
-            printMostPopParty(data)
+        if (commandParameters[4] == "party") {
+            val result = getMostPopularParty(data)
+            println("  The most popular party is ${result.partyName}" + " with ${result.appearances} appearances")
             return
         }
     } else if (commandParameters[3] == "most_terms") {
-        printMostTerms(data)
+        val result = getMostTerms(data)
+        println("  The most terms served by a person is ${result.terms} by ${result.person}")
         return
     } else if (commandParameters[3] == "longest_time") {
-        printMostDaysServed(data)
+        val result = getMostDaysServed(data)
+        println("The longest time served by a person is ${result.time} by ${result.person}")
         return
     }
     printAutocorrect(command)
 }
 
-fun printMostDaysServed(data: List<Person>) {
+data class LongestTime(val person: String, val time: Int)
+
+fun getMostDaysServed(data: List<Person>): LongestTime {
     var mostDaysServed = 0
     var personWithMost = ""
     for (element in data) {
@@ -40,7 +45,7 @@ fun printMostDaysServed(data: List<Person>) {
             personWithMost = data[0].name.first + " " + data[0].name.last
         }
     }
-    println("  The longest amount of time served by one congressman is $mostDaysServed days by $personWithMost")
+    return LongestTime(personWithMost, mostDaysServed)
 }
 
 fun getTotalDays(terms: List<Term>): Int {
@@ -51,7 +56,9 @@ fun getTotalDays(terms: List<Term>): Int {
     return result
 }
 
-fun printMostTerms(data: List<Person>) {
+data class TermsInfo(val person: String, val terms: Int)
+
+fun getMostTerms(data: List<Person>): TermsInfo {
     var mostTerms = data[0].terms.size
     var personWithMost = data[0].name.first + " " + data[0].name.last
     for (i in 1 until data.size) {
@@ -60,10 +67,12 @@ fun printMostTerms(data: List<Person>) {
             personWithMost = data[i].name.first + " " + data[i].name.last
         }
     }
-    println("  The most terms served by a person is $personWithMost with $mostTerms separate terms served")
+    return TermsInfo(personWithMost, mostTerms)
 }
 
-fun printMostPopParty(data: List<Person>) {
+data class PartyInfo(val partyName: String, val appearances: Int)
+
+fun getMostPopularParty(data: List<Person>): PartyInfo {
     val uniqueParties = getAllParties(data).toSet().toList()
     val parties = getAllParties(data)
     var mostPopularParty = ""
@@ -76,10 +85,7 @@ fun printMostPopParty(data: List<Person>) {
             mostPopularParty = parties[i]
         }
     }
-    println(
-        "  The most popular party is $mostPopularParty" +
-                " with $amountOfMostPopParty appearances"
-    )
+    return PartyInfo(partyName = mostPopularParty, appearances = amountOfMostPopParty)
 }
 
 fun getAllParties(data: List<Person>): List<String> {
@@ -101,7 +107,8 @@ fun getDaysBetween(date1: String, date2: String): Int {
     return Duration.between(firstDate, secondDate).toDays().toInt()
 }
 
-fun printMostPopState(data: List<Person>) {
+data class PopState(val state: String, val amount: Int)
+fun getMostPopularState(data: List<Person>): PopState {
     val allStates = getAllStates(data)
     val uniqueStates = allStates.toSet().toList()
     var mostPopularState = ""
@@ -114,10 +121,7 @@ fun printMostPopState(data: List<Person>) {
             mostPopularState = uniqueStates[i]
         }
     }
-    println(
-        "  The most popular state is ${convertStateNames(mostPopularState)}" +
-                " with $amountOfMostPopState appearances"
-    )
+    return PopState(convertStateNames(mostPopularState), amountOfMostPopState)
 }
 
 fun getAllStates(data: List<Person>): List<String> {

@@ -26,6 +26,7 @@ class AutocorrectTests {
         assertEquals(false, isValidCommand("congressservingnameshortestfirst"))
         assertEquals(true, isValidCommand("congress.all.gender.prevalent"))
     }
+
     @Test
     fun testOptionValidity() {
         val options = autocorrect("-get conress.alll.term.longesttime")
@@ -37,6 +38,7 @@ class AutocorrectTests {
         }
         assertEquals(true, valid)
     }
+
     @Test
     fun testAutocorrect1() {
         val options = autocorrect("-get conress.seing.names.shortest.frist")
@@ -46,11 +48,141 @@ class AutocorrectTests {
         assertEquals(true, options2.contains("congress.all.terms.longest_time"))
         assertEquals(true, options3.contains("congress.historic.gender.prevalent"))
     }
+
     @Test
     fun testAutocorrect2() {
         val options = autocorrect("-get senaet.hsitroic.term.pop.staet")
         val options2 = autocorrect("-get houes.seving.gener.prevalnt")
         assertEquals(true, options.contains("senate.historic.terms.pop.state"))
         assertEquals(true, options2.contains("house.serving.gender.prevalent"))
+    }
+}
+
+class TermsTests {
+    private val data = parseCongressFile(true)
+    private val data2 = parseCongressFile(false)
+    private val data3 = data + data2
+
+    @Test
+    fun testTotalDays() {
+        val first = getTotalDays(data[0].terms)
+        val second = getTotalDays(data[34].terms)
+        val third = getTotalDays(data[69].terms)
+        assertEquals(11672, first)
+        assertEquals(8022, second)
+        assertEquals(9475, third)
+    }
+
+    @Test
+    fun testMostDays() {
+        val most1 = getMostDaysServed(data)
+        assertEquals("Sherrod Brown", most1.person)
+        assertEquals(18939, most1.time)
+
+        val most2 = getMostDaysServed(data2)
+        assertEquals("Richard Bassett", most2.person)
+        assertEquals(21827, most2.time)
+
+        val most3 = getMostDaysServed(data3)
+        assertEquals("Sherrod Brown", most3.person)
+        assertEquals(21827, most3.time)
+    }
+
+    @Test
+    fun testMostTerms() {
+        val most1 = getMostTerms(data)
+        assertEquals(most1.terms, 23)
+        assertEquals(most1.person, "Edward Markey")
+
+        val most2 = getMostTerms(data2)
+        assertEquals(most2.terms, 30)
+        assertEquals(most2.person, "John Dingell")
+
+        val most3 = getMostTerms(data3)
+        assertEquals(most3.terms, 30)
+        assertEquals(most3.person, "John Dingell")
+    }
+
+    @Test
+    fun testPopularParty() {
+        val popular1 = getMostPopularParty(data)
+        assertEquals("Democrat", popular1.partyName)
+        assertEquals(1662, popular1.appearances)
+
+        val popular2 = getMostPopularParty(data2)
+        assertEquals("Republican", popular2.partyName)
+        assertEquals(17982, popular2.appearances)
+
+        val popular3 = getMostPopularParty(data3)
+        assertEquals("Democrat", popular3.partyName)
+        assertEquals(20709, popular3.appearances)
+    }
+
+    @Test
+    fun testPopularState() {
+        val most1 = getMostPopularState(data)
+        assertEquals("New Mexico", most1.state)
+        assertEquals(356, most1.amount)
+
+        val most2 = getMostPopularState(data2)
+        assertEquals("North Carolina", most2.state)
+        assertEquals(4035, most2.amount)
+
+        val most3 = getMostPopularState(data3)
+        assertEquals("Louisiana", most3.state)
+        assertEquals(3270, most3.amount)
+    }
+}
+
+class NameTest {
+    private val data = parseCongressFile(true)
+    private val data2 = parseCongressFile(false)
+    private val data3 = data + data2
+
+    @Test
+    fun testShortestNameLengths() {
+        assertEquals("Mo", getShortestFirst(data))
+        assertEquals("De", getShortestFirst(data2))
+        assertEquals("Mo", getShortestFirst(data3))
+        assertEquals("Chu", getShortestLast(data))
+        assertEquals("Wu", getShortestLast(data2))
+        assertEquals("Wu", getShortestLast(data3))
+    }
+
+    @Test
+    fun testLongestNameLengths() {
+        assertEquals("Christopher", getLongestFirst(data))
+        assertEquals("Epaphroditus", getLongestFirst(data2))
+        assertEquals("Epaphroditus", getLongestFirst(data3))
+        assertEquals("Cherfilus-McCormick", getLongestLast(data))
+        assertEquals("O’Loughlin McCarthy", getLongestLast(data2))
+        assertEquals("Cherfilus-McCormick", getLongestLast(data3))
+    }
+}
+
+class TestAgeGender {
+    private val data = parseCongressFile(true)
+    private val data2 = parseCongressFile(false)
+    private val data3 = data + data2
+
+    @Test
+    fun testAge() {
+        val options1 = getMostExtremeAge(true, data)
+        val options2 = getMostExtremeAge(true, data2)
+        val options3 = getMostExtremeAge(true, data3)
+        val options4 = getMostExtremeAge(false, data)
+        assertEquals("August 01, 1995", options1)
+        assertEquals("December 27, 1988", options2)
+        assertEquals("August 01, 1995", options3)
+        assertEquals("June 22, 1933", options4)
+    }
+    @Test
+    fun testGender() {
+        val options1 = getCommonGender(data)
+        val options2 = getCommonGender(data2)
+        val options3 = getCommonGender(data3)
+        assertEquals(CommonGender.MALE, options1)
+        assertEquals(CommonGender.MALE, options2)
+        assertEquals(CommonGender.MALE, options3)
     }
 }

@@ -1,38 +1,25 @@
 import org.apache.commons.text.similarity.LevenshteinDistance
-import kotlin.math.min
 
 fun main() {
-    // current
-    // all
-    // historic
-    //      |   0       1       2      3
-    // -get congress.serving.current.georgia
-//    println(provideAutocorrectOptions("first", 4))
-//    println(fixCommand("-get conress.serving.names.shortest.frist"))
-////    val parts = "-get congress.serving.names.shortest.first".split(' ')[1].split('.')
-//    println("Hello.")
-//    println(parts.subList(0, parts.size))
-//    println(connectWithDot(listOf("congress", "serving")))
-//    println(isValidCommand("congress.serving.terms.shortest.first"))
-//    println(autocorrect("-get conress.serving.terms.shortest.frist"))
-//    println(removeParts(arrayListOf("1", "2", "3", "4"), 2))
-//    println(isValidCommand("congress.serving.names.shortest.first"))
-    println(autocorrect("-get houes.seving.gendr.prevalnt"))
-//println(provideAutocorrectOptions("gener", 2))
+    println(autocorrect("-get conress.sering.current.georgai"))
+    println(autocorrect("-get houes.seving.gener.prevalnt"))
 }
 
 fun printAutocorrect(command: String) {
     print("  Invalid command!")
-    val type = getCmdExceptionType(command)
-    when (type) {
+    when (getCmdExceptionType(command)) {
         CommandExceptionType.NO_SPACE -> println(" -> Invalid get formatting!")
         CommandExceptionType.NO_GET -> println(" -> Missing -get command!")
         CommandExceptionType.NO_DOTS -> println(" -> Invalid command formatting!")
         CommandExceptionType.NOT_ENOUGH_PARTS -> println(" -> Insufficient amount of arguments")
         CommandExceptionType.STARTS_WITH_SPACE -> println(" -> Invalid starting space(s)")
-        else -> return
+        else -> {}
     }
     val corrected = autocorrect(command)
+    if (corrected.isEmpty()) {
+        println(" No autocorrect suggestions!")
+        return
+    }
     print(" Try replacing it with one of these:")
     println()
     for (i in corrected.indices) {
@@ -69,17 +56,22 @@ fun getCmdExceptionType(command: String): CommandExceptionType? {
 
 fun autocorrect(input: String): List<String> {
     var parts = arrayListOf(input.split(' ')[1].split('.'))
+    val currentOptions = provideAutocorrectOptions(parts[0][2], 2, false)
+    var containsCurrent = false
+    if (currentOptions.contains("current") || parts[0][2] == "current") {
+        containsCurrent = true
+    }
     for (i in parts.indices) {
         for (i2 in parts[i].indices) {
             val currentPartsSize = parts.size
-            val currentAutoCorrectSuggestions = provideAutocorrectOptions(parts[i][i2], i2)
+            val currentAutoCorrectSuggestions = provideAutocorrectOptions(parts[i][i2], i2, containsCurrent)
             for (i3 in currentAutoCorrectSuggestions.indices) {
                 val currentNewCommand =
                     parts[i].subList(0, i2) + currentAutoCorrectSuggestions[i3] + parts[i].subList(
                         i2 + 1,
                         parts[i].size
                     )
-                if (currentAutoCorrectSuggestions[i3] != "same") {
+                if (currentAutoCorrectSuggestions[i3] != "same" && currentAutoCorrectSuggestions[i3] != "none") {
                     parts.add(currentNewCommand)
                 } else {
                     parts.add(parts[i])
@@ -116,23 +108,27 @@ fun isValidCommand(command: String): Boolean {
 }
 
 fun isValidPart(word: String, index: Int): Boolean {
-    val valid = listOf(
-        listOf("congress", "senate", "house"),
-        listOf("all", "serving", "historic"),
-        listOf("current", "names", "age", "gender", "terms"),
-        listOf(
+    val valid = when (index) {
+        0 -> listOf("congress", "senate", "house")
+        1 -> listOf("all", "serving", "historic")
+        2 -> listOf("current", "names", "age", "gender", "terms")
+        3 -> listOf(
             "shortest", "longest", "youngest", "oldest", "prevalent",
             "longest_single", "longest_time", "most_terms", "pop"
-        ),
-        listOf("first", "last", "party", "state")
-    )
-    if (valid[index].contains(word)) {
+        )
+        4 -> listOf("first", "last", "party", "state")
+        else -> listOf()
+    }.toMutableList()
+    if (index == 3) {
+        valid += getAllSateNames()
+    }
+    if (valid.contains(word)) {
         return true
     }
     return false
 }
 
-fun provideAutocorrectOptions(word: String, part: Int): List<String> {
+fun provideAutocorrectOptions(word: String, part: Int, current: Boolean): List<String> {
     var wordsToCheckFor = listOf("")
     val suggestions = arrayListOf<String>()
     when (part) {
@@ -145,14 +141,13 @@ fun provideAutocorrectOptions(word: String, part: Int): List<String> {
         )
         4 -> wordsToCheckFor = listOf("first", "last", "party", "state")
     }
+    if (current && part == 3) {
+        wordsToCheckFor = getAllSateNames()
+    }
     if (wordsToCheckFor.contains(word)) {
         return listOf("same")
     }
-    if (part == 3 && word == "current") {
-        suggestions.addAll(autocorrectSuggestions(word, getAllSateNames()) as ArrayList<String>)
-    } else {
-        suggestions.addAll(autocorrectSuggestions(word, wordsToCheckFor))
-    }
+    suggestions.addAll(autocorrectSuggestions(word, wordsToCheckFor))
     return suggestions
 }
 
@@ -192,24 +187,24 @@ fun autocorrectSuggestions(word: String, wordsToCheckFor: List<String>): List<St
     return possibleWords
 }
 
-fun levenshteinRecursive(a: String, b: String): Int {
-    if (b.isEmpty()) {
-        return a.length
-    }
-    if (a.isEmpty()) {
-        return b.length
-    }
-    if (a[0] == b[0]) {
-        return levenshteinRecursive(a.substring(1), b.substring(1))
-    }
-    return 1 + min(
-        min(
-            levenshteinRecursive(a.substring(1), b),
-            levenshteinRecursive(a, b.substring(1))
-        ),
-        levenshteinRecursive(a.substring(1), b.substring(1))
-    )
-}
+//fun levenshteinRecursive(a: String, b: String): Int {
+//    if (b.isEmpty()) {
+//        return a.length
+//    }
+//    if (a.isEmpty()) {
+//        return b.length
+//    }
+//    if (a[0] == b[0]) {
+//        return levenshteinRecursive(a.substring(1), b.substring(1))
+//    }
+//    return 1 + min(
+//        min(
+//            levenshteinRecursive(a.substring(1), b),
+//            levenshteinRecursive(a, b.substring(1))
+//        ),
+//        levenshteinRecursive(a.substring(1), b.substring(1))
+//    )
+//}
 
 fun levenshteinFast(s: String, t: String): Int {
     // Use Apache Commons Text library

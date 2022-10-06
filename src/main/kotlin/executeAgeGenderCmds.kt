@@ -1,8 +1,3 @@
-fun main() {
-//    println(getBirthdayComparison("1996-08-08", "1997-03-23", false))
-    println(getMostExtremeAge(false, parseCongressFile(true)))
-}
-
 fun interpretAgeAndGenderCommand(command: String, data: List<Person>) {
     // -get congress.age.youngest
     // -get congress.age.oldest
@@ -23,8 +18,7 @@ fun interpretAgeAndGenderCommand(command: String, data: List<Person>) {
         }
     }
     if (commandParameters[2] == "gender") {
-        val result = getCommonGender(data)
-        when (result) {
+        when (getCommonGender(data)) {
             CommonGender.MALE -> println("  There are more male than female congressmen")
             CommonGender.FEMALE -> println("  There are more female than male congressmen")
             CommonGender.SAME -> println("  There are the same amount of male and female congressmen")

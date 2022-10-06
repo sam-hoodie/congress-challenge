@@ -53,8 +53,10 @@ class AutocorrectTests {
     fun testAutocorrect2() {
         val options = autocorrect("-get senaet.hsitroic.term.pop.staet")
         val options2 = autocorrect("-get houes.seving.gener.prevalnt")
+        val options3 = autocorrect("-get conress.sering.current.georgai")
         assertEquals(true, options.contains("senate.historic.terms.pop.state"))
         assertEquals(true, options2.contains("house.serving.gender.prevalent"))
+        assertEquals(true, options3.contains("congress.serving.current.georgia"))
     }
 }
 

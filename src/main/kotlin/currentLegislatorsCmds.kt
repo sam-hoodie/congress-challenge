@@ -1,16 +1,4 @@
 import kotlin.collections.HashMap
-
-fun main() {
-    // -get congress.current.georgia
-    // -get senate.current.georgia
-    // -get house.serving.current.georgia
-//    println(stateToAbbreviation("Alabama"))
-//    val example = listOf(listOf("world", "2"), listOf("hello", "2"), listOf("!!!", "3"))
-//    println(sortByDistrict(example))
-//    val data = parseCongressFile(true)
-//    println(interpretCurrentCommands("-get congress.serving.current.georgai", data))
-}
-
 fun interpretCurrentCommands(command: String, data: List<Person>) {
     val cmdParts = command.split(' ')[1].split('.')
     val stateToFind = stateToAbbreviation(cmdParts[3].lowercase())
@@ -40,7 +28,7 @@ fun interpretCurrentCommands(command: String, data: List<Person>) {
 fun getLegislators(data: List<Person>, stateToFind: String, command: String): List<List<String>> {
     val cmdParts = command.split(' ')[1].split('.')
     val legislators = arrayListOf<List<String>>()
-    for (i in 0..data.size - 1) {
+    for (i in data.indices) {
         val terms = data[i].terms
         if (terms[terms.size - 1].state == stateToFind) {
             if (cmdParts[0] == "congress") {
@@ -76,7 +64,7 @@ fun sortByDistrict(input: List<List<String>>): List<List<String>> {
     var district = 1
     val result = arrayListOf<List<String>>()
     while (result.size != input.size) {
-        for (i in 0..input.size - 1) {
+        for (i in input.indices) {
             if (input[i][1].toInt() == district) {
                 result.add(input[i])
             }

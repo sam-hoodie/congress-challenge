@@ -2,7 +2,6 @@ fun main() {
     val data = parseCongressFile(true)
     interpretNameCommand("-get congress.serving.names.shortest.frist", data)
 }
-
 fun interpretNameCommand(command: String, data: List<Person>) {
     // -get congress.names.shortest.first
     // -get congress.names.shortest.last

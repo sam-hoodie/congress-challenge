@@ -1,16 +1,7 @@
 import java.time.Duration
 import java.time.LocalDateTime
-
-fun main() {
-//    val data = parseCongressFile()
-//    printMostPopState(data)
-//    interpretTermCmds("-get congress.terms.pop.state", data)
-    // -get congress.serving.terms.pop.state
-}
-
 fun interpretTermCmds(command: String, data: List<Person>) {
     val commandParameters = command.split('.')
-    var printed = false
     if (commandParameters[3] == "pop") {
         if (commandParameters[4] == "state") {
             println(getMostPopularState(data))

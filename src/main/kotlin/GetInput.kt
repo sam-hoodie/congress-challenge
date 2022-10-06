@@ -3,10 +3,6 @@ fun main() {
     val currentData = parseCongressFile(true)
     val historicData = parseCongressFile(false)
     val fullData = currentData + historicData
-    // current commands :)
-    // age commands  :(
-    // name commands :)
-    // term commands :)
     println("To get the different commands for retrieving data, type \"directions\" (not case sensitive)")
     println("To end the process at any time, type \"end\" (not case sensitive)")
     while (true) {
@@ -25,7 +21,7 @@ fun main() {
         } else if(inputParts[1] == "all") {
             fullData
         } else {
-            listOf<Person>()
+            listOf()
         }
         if (inputParts[0] != "-get congress" && (inputParts[0] == "-get senate" || inputParts[0] == "-get house")) {
             val newData: List<Person> = when (inputParts[0]) {

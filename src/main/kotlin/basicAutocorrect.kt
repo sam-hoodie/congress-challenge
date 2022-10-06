@@ -1,10 +1,4 @@
 import org.apache.commons.text.similarity.LevenshteinDistance
-
-fun main() {
-    println(autocorrect("-get conress.sering.current.georgai"))
-    println(autocorrect("-get houes.seving.gener.prevalnt"))
-}
-
 fun printAutocorrect(command: String) {
     print("  Invalid command!")
     when (getCmdExceptionType(command)) {

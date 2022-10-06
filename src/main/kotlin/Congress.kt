@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.type.TypeFactory
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
-import java.io.InputStream
 
 data class Person(
     val name: Name,
@@ -59,10 +58,5 @@ fun main() {
     val result = parseCongressFile(false)
 
     println(result.size)
-//    for (person in result) {
-//        println("${person.name.first} ${person.name.last} served ${person.terms.size} time(s)")
-//    }
-//    for (i in 0..result.size - 1) {
-//        println(result[i].terms)
-//    }
+
 }

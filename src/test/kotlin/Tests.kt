@@ -188,3 +188,20 @@ class TestAgeGender {
         assertEquals(CommonGender.MALE, options3)
     }
 }
+
+class CurrentTests {
+    private val data = parseCongressFile(true)
+    private val data2 = parseCongressFile(false)
+    private val data3 = data + data2
+    @Test
+    fun testSenate() {
+        val options1 = getLegislators(data, "GA", "-get senate.serving.current.georgia")
+        assertEquals(listOf(listOf("Jon Ossoff"), listOf("Raphael Warnock")), options1)
+
+        val options2 = getLegislators(data, "OH", "-get senate.serving.current.ohio")
+        assertEquals(listOf(listOf("Sherrod Brown"), listOf("Robert Portman")), options2)
+
+        val options3 = getLegislators(data, "AL", "-get senate.serving.current.alabama")
+        assertEquals(listOf(listOf("Richard Shelby"), listOf("Tommy Tuberville")), options3)
+    }
+}

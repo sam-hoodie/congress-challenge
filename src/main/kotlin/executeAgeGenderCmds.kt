@@ -1,3 +1,8 @@
+fun main() {
+    val data = parseCongressFile(true)
+    interpretAgeAndGenderCommand("-get house.serving.age.oldest", data)
+}
+
 fun interpretAgeAndGenderCommand(command: String, data: List<Person>) {
     // -get congress.age.youngest
     // -get congress.age.oldest
@@ -9,11 +14,11 @@ fun interpretAgeAndGenderCommand(command: String, data: List<Person>) {
     val commandParameters = command.split('.')
     if (commandParameters[2] == "age") {
         if (commandParameters[3] == "youngest") {
-            println("The youngest congressman was born on ${getMostExtremeAge(true, data)}")
+            println("  The youngest congressman was born on ${getMostExtremeAge(true, data)}")
             return
         }
-        if (commandParameters[3] == "youngest") {
-            println("The youngest congressman was born on ${getMostExtremeAge(true, data)}")
+        if (commandParameters[3] == "oldest") {
+            println("  The oldest congressman was born on ${getMostExtremeAge(false, data)}")
             return
         }
     }

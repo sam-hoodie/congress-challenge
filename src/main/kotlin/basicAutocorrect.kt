@@ -1,13 +1,9 @@
 import org.apache.commons.text.similarity.LevenshteinDistance
 fun printAutocorrect(command: String) {
     print("  Invalid command!")
-    when (getCmdExceptionType(command)) {
-        CommandExceptionType.NO_SPACE -> println(" -> Invalid get formatting!")
-        CommandExceptionType.NO_GET -> println(" -> Missing -get command!")
-        CommandExceptionType.NO_DOTS -> println(" -> Invalid command formatting!")
-        CommandExceptionType.NOT_ENOUGH_PARTS -> println(" -> Insufficient amount of arguments")
-        CommandExceptionType.STARTS_WITH_SPACE -> println(" -> Invalid starting space(s)")
-        else -> {}
+    val printed = printInvalidType(command)
+    if (printed) {
+        return
     }
     val corrected = autocorrect(command)
     if (corrected.isEmpty()) {
@@ -21,12 +17,29 @@ fun printAutocorrect(command: String) {
     }
 }
 
+fun printInvalidType(command: String): Boolean {
+    val type = getCmdExceptionType(command)
+    if (type == CommandExceptionType.NONE) {
+        return false
+    }
+    when (type) {
+        CommandExceptionType.NO_SPACE -> println(" -> Invalid get formatting!")
+        CommandExceptionType.NO_GET -> println(" -> Missing -get command!")
+        CommandExceptionType.NO_DOTS -> println(" -> Invalid command formatting!")
+        CommandExceptionType.NOT_ENOUGH_PARTS -> println(" -> Insufficient amount of arguments")
+        CommandExceptionType.STARTS_WITH_SPACE -> println(" -> Invalid starting space(s)")
+        else -> {}
+    }
+    return true
+}
+
 enum class CommandExceptionType {
     NO_SPACE,
     NO_GET,
     NO_DOTS,
     NOT_ENOUGH_PARTS,
-    STARTS_WITH_SPACE
+    STARTS_WITH_SPACE,
+    NONE
 }
 
 fun getCmdExceptionType(command: String): CommandExceptionType? {
@@ -45,7 +58,7 @@ fun getCmdExceptionType(command: String): CommandExceptionType? {
     if (command.startsWith(" ")) {
         return CommandExceptionType.STARTS_WITH_SPACE
     }
-    return null
+    return CommandExceptionType.NONE
 }
 
 fun autocorrect(input: String): List<String> {

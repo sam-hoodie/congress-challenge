@@ -15,7 +15,7 @@ class AutocorrectTests {
         assertEquals(CommandExceptionType.NO_DOTS, type3)
         assertEquals(CommandExceptionType.NOT_ENOUGH_PARTS, type4)
         assertEquals(CommandExceptionType.NO_GET, type5)
-        assertEquals(null, type6)
+        assertEquals(CommandExceptionType.NONE, type6)
     }
 
     @Test

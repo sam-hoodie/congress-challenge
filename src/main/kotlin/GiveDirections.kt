@@ -43,8 +43,8 @@ fun printDirectionsNames() {
     print("        > ")
     when (readLine().toString().toInt()) {
         0 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).names.shortest.first")
-        1 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).names.longest.first")
-        2 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).names.shortest.last")
+        1 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).names.shortest.last")
+        2 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).names.longest.first")
         3 -> println("        Type the command: -get (congress/senate/house).(serving/historic/all).names.longest.last")
         else -> println("          Invalid input")
     }
